@@ -43,46 +43,61 @@ The maximum possible groupings of adjacent ones are already shown in the figure.
 5.For different input combinations generate the timing diagram.
 ~~~
 
+Developed by:   GURUPARAN G 
+
+RegisterNumber: 24001677
+
+
 
 
 **PROGRAM**
+
+
 ~~~
-module EXP_6(q, q_bar, s,r, clk, reset);//SR Flip Flop Behavioral Level using ‘case’ 
-  input s,r,clk, reset;
-  output reg q;
-  output q_bar;
- 
-  always@(posedge clk) begin // for synchronous reset
-    if(!reset)       
-			q <= 0;
-    else 
-  begin
-      case({s,r})       
-	     2'b00: q <= q;    // No change
-        2'b01:q<=1'b0;   // Write logic for reset
-        2'b10:q<=1'b1;   // Write logic for set
-        2'b11:q<=1'bx;   // Write logic for Invalid state
-      endcase
-    end
+module exp6(s, r, clk, q, qbar);
+  input s, r, clk;
+  output reg q, qbar;
+
+  initial begin
+    q = 0;
+    qbar = 1;
   end
-  assign q_bar = ~q;
+
+  always @(posedge clk) begin
+    if (s & r) begin
+      // Invalid condition (both Set and Reset are active)
+      q = 1'bx;
+      qbar = 1'bx;
+    end else if (s) begin
+      // Set condition
+      q = 1;
+      qbar = 0;
+    end else if (r) begin
+      // Reset condition
+      q = 0;
+      qbar = 1;
+    end
+    // No change condition is implicitly handled.
+  end
 endmodule
 ~~~
 
- Developed by:GURUPARAN G RegisterNumber:24001677
 
 
-**RTL**
 
-![Screenshot 2024-12-25 153652](https://github.com/user-attachments/assets/95c6a9fe-d091-4aed-b94d-7f2e6c4815c5)
-
-
-**TIMING DIAGRAMS**
-
-![Screenshot 2024-12-25 153726](https://github.com/user-attachments/assets/46d3683a-3d33-4a92-a1b8-1916233edac3)
+**RTL DIAGRAM**
 
 
-**RESULTS**
+![Screenshot 2025-01-02 085102](https://github.com/user-attachments/assets/6a9bbbbc-a59b-4423-8438-09731a4d4f04)
+
+
+**TIMING DIAGRAM**
+
+
+![Screenshot 2025-01-02 085128](https://github.com/user-attachments/assets/7a7ff9c4-6aa7-4780-af82-bd74cac3df63)
+
+
+**RESULT**
 
 
 Thus the SRflipflop code excutes correctly.
